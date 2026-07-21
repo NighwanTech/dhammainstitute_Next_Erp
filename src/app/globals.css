@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+:root {
+  /* ═══ Dhamma Superspeciality Hospital Brand Colors ═══ */
+  --dhamma-blue:       #0072CE;   /* Royal Blue — Primary */
+  --dhamma-blue-dark:  #00509E;   /* Deep Blue — hover/active */
+  --dhamma-blue-darker:#003f7d;   /* Darkest Blue */
+  --dhamma-blue-light: #e8f3fc;   /* Light Blue tint */
+  --dhamma-blue-mid:   #064f96;   /* Mid Blue */
+
+  --dhamma-red:        #ED1C24;   /* Brand Red — accent */
+  --dhamma-red-dark:   #C8111A;   /* Dark Red */
+  --dhamma-red-light:  #FDECEE;   /* Light Red tint */
+
+  --dhamma-gold:       #F5A623;   /* Golden flame */
+  --dhamma-gold-dark:  #D48A0A;   /* Dark gold */
+  --dhamma-gold-light: #FFF8E8;   /* Light gold tint */
+
+  --dhamma-white:      #FFFFFF;
+  --dhamma-offwhite:   #FDFAF8;   /* Warm white (from navbar) */
+  --dhamma-bg:         #F4F7FB;   /* Light blue-grey page bg */
+  --dhamma-border:     #E2EAF4;   /* Subtle blue-tinted border */
+
+  --background: var(--dhamma-bg);
+  --foreground: #111827;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ── Smooth touch scrolling ── */
+.overflow-x-auto,
+.overflow-y-auto,
+.overflow-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── No horizontal overflow ── */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* ── Dhamma scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #EBF2FB; }
+::-webkit-scrollbar-thumb { background: #0072CE; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #00509E; }
+
+/* ── Keyframes ── */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn { animation: fadeIn 0.2s ease forwards; }
