@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
+  Bot,
   CalendarCheck,
   Stethoscope,
   Building2,
@@ -21,35 +22,59 @@ import {
   X,
   Activity,
   BookOpen,
-  IndianRupee
+  IndianRupee,
+  SlidersHorizontal,
+  ImageIcon,
+  Newspaper,
+  ChevronDown,
+  FileText,
+  Tv,
+  Download,
+  Users2,
 } from 'lucide-react';
 import { useSidebar } from '@/components/SidebarContext';
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [mediaDropdownOpen, setMediaDropdownOpen] = useState(true);
   const { isMobileOpen, setIsMobileOpen } = useSidebar();
   const pathname = usePathname();
 
+  const isMediaActive = pathname.startsWith('/media');
+
   const menuItems = [
-    { name: 'Dashboard',    icon: LayoutDashboard, href: '/' },
-    { name: 'Appointments', icon: CalendarCheck,   href: '/appointments' },
-    { name: 'Doctors',      icon: Stethoscope,     href: '/doctors' },
-    { name: 'Faculty',      icon: GraduationCap,   href: '/faculty' },
-    { name: 'Departments',  icon: Building2,        href: '/departments' },
-    { name: 'OPD Timing',   icon: Timer,            href: '/opd-timing' },
-    { name: 'Slots',        icon: Clock,            href: '/slots' },
-    { name: 'Contact',      icon: MessageSquare,   href: '/contact' },
-    { name: 'Notices',      icon: Megaphone,        href: '/notices' },
-    { name: 'Announcements',icon: Volume2,          href: '/announcements' },
-    { name: 'News Tickers', icon: Activity,         href: '/news-tickers' },
-    { name: 'Events',       icon: CalendarDays,    href: '/events' },
-    { name: 'Time Table',   icon: BookOpen,         href: '/timetable' },
-    { name: 'Fee Structure',icon: IndianRupee,      href: '/fee-structure' },
+    { name: 'Dashboard',        icon: LayoutDashboard,   href: '/' },
+    { name: 'Hero Slider',      icon: SlidersHorizontal, href: '/hero-slides' },
+    { name: 'Gallery & Media',  icon: ImageIcon,         href: '/gallery' },
+    { name: 'Health Blogs',      icon: BookOpen,          href: '/blogs' },
+    { name: 'AI Chatbot',        icon: Bot,               href: '/chatbot' },
+    { name: 'Appointments',     icon: CalendarCheck,     href: '/appointments' },
+    { name: 'Doctors',          icon: Stethoscope,       href: '/doctors' },
+    { name: 'Faculty',          icon: GraduationCap,     href: '/faculty' },
+    { name: 'Departments',      icon: Building2,         href: '/departments' },
+    { name: 'OPD Timing',       icon: Timer,             href: '/opd-timing' },
+    { name: 'Slots',            icon: Clock,             href: '/slots' },
+    { name: 'Contact',          icon: MessageSquare,     href: '/contact' },
+    { name: 'Notices',          icon: Megaphone,         href: '/notices' },
+    { name: 'Announcements',    icon: Volume2,           href: '/announcements' },
+    { name: 'News Tickers',     icon: Activity,          href: '/news-tickers' },
+    { name: 'Events',           icon: CalendarDays,      href: '/events' },
+    { name: 'Time Table',       icon: BookOpen,          href: '/timetable' },
+    { name: 'Fee Structure',    icon: IndianRupee,       href: '/fee-structure' },
+  ];
+
+  const mediaSubmenu = [
+    { name: 'All Media Hub',     icon: Newspaper,  href: '/media' },
+    { name: 'Press Release',     icon: FileText,   href: '/media/press-release' },
+    { name: 'Media Coverage',    icon: Tv,         href: '/media/media-coverage' },
+    { name: 'Newsletters',       icon: Download,   href: '/media/newsletters' },
+    { name: 'Health Blogs',      icon: BookOpen,   href: '/blogs' },
+    { name: 'Media Connect',     icon: Users2,     href: '/media/media-connect' },
   ];
 
   return (
     <>
-      {/* Mobile Backdrop */}
+      {/* Mobile Overlay */}
       {isMobileOpen && (
         <div
           className="fixed inset-0 z-40 md:hidden"
@@ -69,10 +94,10 @@ export default function Sidebar() {
           boxShadow: "4px 0 24px rgba(0,0,0,0.02)",
         }}
       >
-        {/* ── Collapse Toggle ── */}
+        {/* Collapse Toggle */}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="hidden md:flex items-center justify-center absolute -right-3.5 top-8 w-7 h-7 rounded-full shadow-lg z-20 transition-all"
+          className="hidden md:flex items-center justify-center absolute -right-3.5 top-8 w-7 h-7 rounded-full shadow-lg z-20 transition-all cursor-pointer"
           style={{
             background: "#ED1C24",
             color: "white",
@@ -83,13 +108,12 @@ export default function Sidebar() {
           {isCollapsed ? <ChevronsRight size={13} /> : <ChevronsLeft size={13} />}
         </button>
 
-        {/* ── Logo Section ── */}
+        {/* Logo Section */}
         <div
           className={`flex items-center py-5 border-b ${isCollapsed ? 'justify-center px-3' : 'justify-between px-4'}`}
           style={{ borderColor: "rgba(255,255,255,0.12)" }}
         >
           <Link href="/" className="flex items-center gap-2.5 min-w-0">
-            {/* Logo card */}
             <div
               className="flex items-center justify-center shrink-0"
               style={{
@@ -99,7 +123,6 @@ export default function Sidebar() {
               }}
             >
               {isCollapsed ? (
-                // Collapsed: show only the flame icon portion
                 <Image
                   src="/dhamma.png"
                   alt="Dhamma"
@@ -119,7 +142,6 @@ export default function Sidebar() {
               )}
             </div>
 
-            {/* Text label (expanded only) */}
             {!isCollapsed && (
               <div className="min-w-0">
                 <p
@@ -138,29 +160,111 @@ export default function Sidebar() {
 
           {/* Mobile close */}
           <button
-            className="md:hidden p-1.5 rounded-lg ml-1"
-            style={{ color: "#6b7280" }}
+            className="md:hidden p-1.5 rounded-lg ml-1 text-gray-500 cursor-pointer"
             onClick={() => setIsMobileOpen(false)}
           >
             <X size={18} />
           </button>
         </div>
 
-        {/* ── Section label ── */}
+        {/* Section label */}
         {!isCollapsed && (
-          <div className="px-4 pt-5 pb-1">
+          <div className="px-4 pt-4 pb-1">
             <p
               className="text-[10px] font-bold tracking-[0.14em] uppercase"
               style={{ color: "#9ca3af" }}
             >
-              Main Menu
+              Main Navigation
             </p>
           </div>
         )}
 
-        {/* ── Nav Items ── */}
+        {/* Nav Items */}
         <nav className={`flex-1 py-2 space-y-0.5 overflow-y-auto ${isCollapsed ? 'px-2' : 'px-3'}`}>
-          {menuItems.map((item) => {
+          {/* Dashboard */}
+          {(() => {
+            const isActive = pathname === '/';
+            return (
+              <Link
+                href="/"
+                title="Dashboard"
+                onClick={() => setIsMobileOpen(false)}
+                className="flex items-center gap-3 rounded-xl transition-all group relative mb-1"
+                style={{
+                  padding: isCollapsed ? "10px 0" : "9px 12px",
+                  justifyContent: isCollapsed ? "center" : "flex-start",
+                  background: isActive ? "#EBF5FF" : "transparent",
+                  borderLeft: isActive ? "3px solid #0072CE" : "3px solid transparent",
+                }}
+              >
+                <LayoutDashboard size={18} className="shrink-0" style={{ color: isActive ? "#0072CE" : "#6b7280" }} />
+                {!isCollapsed && (
+                  <span className="text-sm truncate" style={{ color: isActive ? "#0072CE" : "#4b5563", fontWeight: isActive ? 700 : 500 }}>
+                    Dashboard
+                  </span>
+                )}
+                {isActive && !isCollapsed && <div className="ml-auto w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#ED1C24" }} />}
+              </Link>
+            );
+          })()}
+
+          {/* MEDIA CENTRE DROPDOWN (4 Sections) */}
+          <div className="my-1">
+            <button
+              onClick={() => {
+                if (isCollapsed) setIsCollapsed(false);
+                setMediaDropdownOpen(!mediaDropdownOpen);
+              }}
+              className="w-full flex items-center gap-3 rounded-xl transition-all group relative cursor-pointer"
+              style={{
+                padding: isCollapsed ? "10px 0" : "9px 12px",
+                justifyContent: isCollapsed ? "center" : "flex-start",
+                background: isMediaActive ? "#EBF5FF" : "transparent",
+                borderLeft: isMediaActive ? "3px solid #0072CE" : "3px solid transparent",
+              }}
+            >
+              <Newspaper size={18} className="shrink-0" style={{ color: isMediaActive ? "#0072CE" : "#6b7280" }} />
+              {!isCollapsed && (
+                <>
+                  <span className="text-sm font-bold truncate flex-1 text-left" style={{ color: isMediaActive ? "#0072CE" : "#374151" }}>
+                    Media Centre
+                  </span>
+                  <ChevronDown
+                    size={14}
+                    className={`transition-transform duration-200 ${mediaDropdownOpen ? 'rotate-180' : ''}`}
+                    style={{ color: isMediaActive ? "#0072CE" : "#9ca3af" }}
+                  />
+                </>
+              )}
+            </button>
+
+            {/* Submenu Items */}
+            {!isCollapsed && mediaDropdownOpen && (
+              <div className="ml-4 pl-3 border-l-2 border-blue-100 my-1 space-y-0.5">
+                {mediaSubmenu.map(sub => {
+                  const isSubActive = pathname === sub.href;
+                  return (
+                    <Link
+                      key={sub.name}
+                      href={sub.href}
+                      onClick={() => setIsMobileOpen(false)}
+                      className="flex items-center gap-2.5 py-1.5 px-2.5 rounded-lg text-xs font-semibold transition-all"
+                      style={{
+                        background: isSubActive ? "#0072CE" : "transparent",
+                        color: isSubActive ? "#ffffff" : "#4b5563",
+                      }}
+                    >
+                      <sub.icon size={14} className="shrink-0" />
+                      <span className="truncate">{sub.name}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Remaining Menu Items */}
+          {menuItems.slice(1).map((item) => {
             const isActive =
               pathname === item.href ||
               (item.href !== '/' && pathname.startsWith(item.href));
@@ -175,22 +279,8 @@ export default function Sidebar() {
                 style={{
                   padding: isCollapsed ? "10px 0" : "9px 12px",
                   justifyContent: isCollapsed ? "center" : "flex-start",
-                  background: isActive
-                    ? "#EBF5FF"
-                    : "transparent",
-                  borderLeft: isActive
-                    ? "3px solid #0072CE"
-                    : "3px solid transparent",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    (e.currentTarget as HTMLAnchorElement).style.background = "#F4F7FB";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
-                  }
+                  background: isActive ? "#EBF5FF" : "transparent",
+                  borderLeft: isActive ? "3px solid #0072CE" : "3px solid transparent",
                 }}
               >
                 <item.icon
@@ -215,53 +305,27 @@ export default function Sidebar() {
                     style={{ background: "#ED1C24" }}
                   />
                 )}
-
-                {/* Tooltip (collapsed) */}
-                {isCollapsed && (
-                  <div
-                    className="absolute left-full ml-3 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all z-50"
-                    style={{
-                      background: "#003f7d",
-                      color: "white",
-                      border: "1px solid rgba(255,255,255,0.15)",
-                      boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
-                    }}
-                  >
-                    {item.name}
-                    {/* Red dot tooltip accent */}
-                    <span
-                      className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full"
-                      style={{ background: "#ED1C24" }}
-                    />
-                  </div>
-                )}
               </Link>
             );
           })}
         </nav>
 
-        {/* ── Footer ── */}
-        <div
-          className="border-t py-4"
-          style={{ borderColor: "#E2EAF4" }}
-        >
+        {/* Footer */}
+        <div className="border-t py-4" style={{ borderColor: "#E2EAF4" }}>
           {isCollapsed ? (
             <div className="flex justify-center">
-              <div
-                className="w-5 h-5 rounded-full"
-                style={{ background: "rgba(237,28,36,0.5)" }}
-              />
+              <div className="w-5 h-5 rounded-full" style={{ background: "rgba(237,28,36,0.5)" }} />
             </div>
           ) : (
             <div className="px-4">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#4ade80" }} />
-                <span className="text-[10px] font-medium" style={{ color: "#9ca3af" }}>
+                <span className="text-[10px] font-medium text-gray-400">
                   System Online
                 </span>
               </div>
-              <p className="text-[10px]" style={{ color: "#d1d5db" }}>
-                © {new Date().getFullYear()} Dhamma Institute of Medical Sciences
+              <p className="text-[10px] text-gray-400">
+                © {new Date().getFullYear()} Dhamma Institute
               </p>
             </div>
           )}
